@@ -24,8 +24,12 @@ LIBSOUPFLAGS = $(shell pkg-config --cflags libsoup-2.4)
 LIBSOUPLIBS = $(shell pkg-config --libs libsoup-2.4)
 LIBSSLFLAGS = $(shell pkg-config --cflags openssl)
 LIBSSLLIBS = $(shell pkg-config --libs openssl)
-LIBSECRETFLAGS =$(shell pkg-config --cflags libsecret-1)
-LIBSECRETLIBS =$(shell pkg-config --libs libsecret-1)
+LIBSECRETFLAGS = $(shell pkg-config --cflags libsecret-1)
+LIBSECRETLIBS = $(shell pkg-config --libs libsecret-1)
+LIBPEASFLAGS = $(shell pkg-config --cflags libpeas-1.0 libpeas-gtk-1.0)
+LIBPEASLIBS = $(shell pkg-config --libs libpeas-1.0 libpeas-gtk-1.0)
+LIBGIFLAGS = $(shell pkg-config --cflags gobject-introspection-1.0)
+LIBGILIBS = $(shell pkg-config --libs gobject-introspection-1.0)
 
 CFLAGS += -std=gnu99 -O2 -Wall -Iinc -Wno-deprecated-declarations \
 		  $(DEFS) \
@@ -34,14 +38,18 @@ CFLAGS += -std=gnu99 -O2 -Wall -Iinc -Wno-deprecated-declarations \
 		  $(LIBCONFIGFLAGS) \
 		  $(LIBSOUPFLAGS) \
 		  $(LIBSSLFLAGS) \
-		  $(LIBSECRETFLAGS)
+		  $(LIBSECRETFLAGS) \
+		  $(LIBPEASFLAGS) \
+		  $(LIBGIFLAGS)
 
 LDFLAGS += $(DBGFLAGS) \
 		   $(GTK3LIBS) \
 		   $(LIBCONFIGLIBS) \
 		   $(LIBSOUPLIBS) \
 		   $(LIBSSLLIBS) \
-		   $(LIBSECRETLIBS)
+		   $(LIBSECRETLIBS) \
+		   $(LIBPEASLIBS) \
+		   $(LIBGILIBS)
 
 SRCS = $(wildcard *.c */*.c */*/*.c $(BUILD_DIR)/resources.c)
 OBJS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(notdir $(SRCS)))
