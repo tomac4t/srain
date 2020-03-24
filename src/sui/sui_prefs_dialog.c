@@ -35,6 +35,7 @@
 #include "sui_prefs_dialog.h"
 #include "i18n.h"
 #include "path.h"
+#include "plugin/plugin_manager.h"
 
 struct _SuiPrefsDialog {
     GtkDialog parent;
@@ -46,6 +47,9 @@ struct _SuiPrefsDialog {
     /* Reload config */
     GtkLabel *reload_config_label;
     GtkButton *reload_config_button;
+
+    /* Plugin manager */
+    GtkBox *plugin_manager_box;
 };
 
 struct _SuiPrefsDialogClass {
@@ -92,6 +96,9 @@ without restarting Srain (such as csd)</i>.",
 
     gtk_label_set_markup(self->reload_config_label, markup);
 
+    SrnPluginManager *plug_mgr = srn_plugin_manager_new();
+    gtk_box_pack_start(self->plugin_manager_box, plug_mgr, TRUE, TRUE, 0);
+
     g_free(user_cfg_path);
     g_free(markup);
 }
@@ -108,6 +115,8 @@ static void sui_prefs_dialog_class_init(SuiPrefsDialogClass *class){
 
     gtk_widget_class_bind_template_child(widget_class, SuiPrefsDialog, reload_config_label);
     gtk_widget_class_bind_template_child(widget_class, SuiPrefsDialog, reload_config_button);
+
+    gtk_widget_class_bind_template_child(widget_class, SuiPrefsDialog, plugin_manager_box);
 }
 
 /*****************************************************************************

@@ -22,9 +22,9 @@
 #include <libpeas/peas.h>
 #include <libpeas-gtk/peas-gtk.h>
 
-#include "i18n.h"
+#include "plugin/plugin_manager.h"
 
-#include "plugin_manager.h"
+#include "i18n.h"
 
 struct _SrnPluginManager {
     PeasGtkPluginManager parent;
