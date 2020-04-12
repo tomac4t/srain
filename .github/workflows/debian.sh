@@ -1,13 +1,11 @@
 #!/bin/bash
 set -ex
-rm -rf srain-contrib;
-rm -rf debian;
 if [ $1 = "ci" ]; then
 sudo apt-get install pkg-config gettext libgtk-3-dev libsoup2.4-dev libconfig-dev libssl-dev libsecret-1-dev glib-networking libgtk3.0 libsoup2.4 libconfig9 libsecret-1-0;
 fi
 SRAIN_HOME=$PWD;
 SRAIN_TAG=`git rev-list --tags --max-count=1`;
-SRAIN_TAGNAME=`git describe --tags $SRAIN_TAG`;
+SRAIN_TAG_NAME=`git describe --tags $SRAIN_TAG`;
 SRAIN_TAG_COMMITTER_NAME=`git log $SRAIN_TAG -n 1 --pretty=format:"%an"`;
 SRAIN_TAG_COMMITTER_EMAIL=`git log $SRAIN_TAG -n 1 --pretty=format:"%ae"`;
 SRAIN_TAG_DATE=`git log $SRAIN_TAG -n 1 --pretty=format:"%ad" --date=format:'%a, %d %b %Y %H:%M:%S %z'`;
@@ -15,9 +13,9 @@ git clone https://github.com/SrainApp/srain-contrib.git --depth 1;
 cd srain-contrib;
 mv pack/debian $SRAIN_HOME/debian;
 cat > $SRAIN_HOME/debian/changelog << EOF
-srain ($SRAIN_TAGNAME) unstable; urgency=medium
+srain ($SRAIN_TAG_NAME) unstable; urgency=medium
 
-  * New upstream version $SRAIN_TAGNAME
+  * New upstream version $SRAIN_TAG_NAME
 
  -- $SRAIN_TAG_COMMITTER_NAME <$SRAIN_TAG_COMMITTER_EMAIL>  $SRAIN_TAG_DATE
 EOF
@@ -58,6 +56,6 @@ cd $SRAIN_HOME;
 rm -rf srain-contrib;
 dpkg-buildpackage -b -us -uc;
 mkdir out;
-mv ../srain_"$SRAIN_TAGNAME"_amd64.deb $PWD/out/
-sudo apt-get install $PWD/out/srain_"$SRAIN_TAGNAME"_amd64.deb;
+mv ../srain_"$SRAIN_TAG_NAME"_amd64.deb $PWD/out/
+sudo apt-get install $PWD/out/srain_"$SRAIN_TAG_NAME"_amd64.deb;
 /usr/bin/srain --version;
