@@ -8,15 +8,9 @@ fi
 SRAIN_HOME=$PWD;
 SRAIN_TAG=`git rev-list --tags --max-count=1`;
 SRAIN_TAGNAME=`git describe --tags $SRAIN_TAG`;
-#SRAIN_TAG_COMMITTER_NAME=`git show --pretty=format:"%an" --oneline $SRAIN_TAG | head -n 1`
-#SRAIN_TAG_COMMITTER_EMAIL=`git show --pretty=format:"%ae" --oneline $SRAIN_TAG | head -n 1`;
-#SRAIN_TAG_DATE=`git show --pretty=format:"%ad" --oneline --date=format:'%a, %d %b %Y %H:%M:%S %z' $SRAIN_TAG | head -n 1`;
 SRAIN_TAG_COMMITTER_NAME=`git log $SRAIN_TAG -n 1 --pretty=format:"%an"`;
 SRAIN_TAG_COMMITTER_EMAIL=`git log $SRAIN_TAG -n 1 --pretty=format:"%ae"`;
 SRAIN_TAG_DATE=`git log $SRAIN_TAG -n 1 --pretty=format:"%ad" --date=format:'%a, %d %b %Y %H:%M:%S %z'`;
-#SRAIN_TAG_COMMITTER_NAME="GitHub Actions"
-#SRAIN_TAG_COMMITTER_EMAIL="tomac4t@users.noreply.github.com"
-#SRAIN_TAG_DATE=`date "+%a, %d %b %Y %H:%M:%S %z"`
 git clone https://github.com/SrainApp/srain-contrib.git --depth 1;
 cd srain-contrib;
 mv pack/debian $SRAIN_HOME/debian;
