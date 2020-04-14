@@ -14,5 +14,8 @@ jobs:
         .github/workflows/debian.sh ci
     - uses: ncipollo/release-action@v1
       with:
+        allowUpdates: true
         artifacts: "out/*"
+        draft: true
+        prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
