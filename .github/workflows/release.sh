@@ -27,7 +27,7 @@ rm -rf srain-contrib;
 dpkg-buildpackage -b -us -uc;
 mkdir $SRAIN_HOME/out;
 mv $SRAIN_HOME/../srain_"$SRAIN_TAG_NAME"_amd64.deb $SRAIN_HOME/out/
-sudo apt-get install $SRAIN_HOME/out/srain_"$SRAIN_TAG_NAME"_amd64.deb;
+apt-get install $SRAIN_HOME/out/srain_"$SRAIN_TAG_NAME"_amd64.deb;
 /usr/bin/srain --version;
 # Changelog
 CHANGELOG_LINE=`grep -oP "^========================" $SRAIN_HOME/doc/changelog.rst -n | awk -F: '{print $1}'`;

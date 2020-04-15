@@ -10,3 +10,11 @@ jobs:
     - name: Release
       run: |
         .github/workflows/release.sh ci
+    - uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        artifacts: "out/*"
+        bodyFile: ".github/changelog"
+        draft: true
+        prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}
