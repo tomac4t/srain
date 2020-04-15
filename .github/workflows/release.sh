@@ -2,7 +2,7 @@
 set -ex
 # Install the dependencies.
 if [ $1 = "ci" ]; then
-apt-get install -y git pkg-config gettext libgtk-3-dev libsoup2.4-dev libconfig-dev libssl-dev libsecret-1-dev glib-networking libgtk3.0 libsoup2.4 libconfig9 libsecret-1-0;
+apt-get install dpkg-dev pkg-config gettext libgtk-3-dev libsoup2.4-dev libconfig-dev libssl-dev libsecret-1-dev glib-networking libgtk3.0 libsoup2.4 libconfig9 libsecret-1-0;
 git fetch origin +refs/tags/*:refs/tags/*
 fi
 SRAIN_HOME=$PWD;
