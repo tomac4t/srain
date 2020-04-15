@@ -2,7 +2,10 @@
 set -ex
 # Install the dependencies.
 if [ $1 = "ci" ]; then
-sudo apt-get install pkg-config gettext libgtk-3-dev libsoup2.4-dev libconfig-dev libssl-dev libsecret-1-dev glib-networking libgtk3.0 libsoup2.4 libconfig9 libsecret-1-0;
+apt-get update
+apt-get upgrade -y 
+apt-get install -y git pkg-config gettext libgtk-3-dev libsoup2.4-dev libconfig-dev libssl-dev libsecret-1-dev glib-networking libgtk3.0 libsoup2.4 libconfig9 libsecret-1-0;
+git fetch origin +refs/tags/*:refs/tags/*
 fi
 SRAIN_HOME=$PWD;
 SRAIN_TAG=`git rev-list --tags --max-count=1`;

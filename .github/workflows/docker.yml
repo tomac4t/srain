@@ -6,8 +6,6 @@ jobs:
     container: debian:buster
     steps:
     - uses: actions/checkout@v2
-    - run: apt-get install git
-    - run: git fetch origin +refs/tags/*:refs/tags/*
     - name: Release
       run: |
         .github/workflows/release.sh ci
