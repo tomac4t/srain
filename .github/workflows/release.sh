@@ -70,5 +70,5 @@ CHANGELOG_LASTEST_END=`expr $CHANGELOG_LINE_TWO - 5`
 sed -n "$CHANGELOG_LASTEST_BEGIN","$CHANGELOG_LASTEST_END"p $SRAIN_HOME/doc/changelog.rst  > $SRAIN_HOME/.github/changelog 
 sed -i s/":pull:.\([0-9]*\)."/"#\1"/g $SRAIN_HOME/.github/changelog;
 sed -i s/":issue:.\([0-9]*\)."/"#\1"/g $SRAIN_HOME/.github/changelog;
-sed -i s/":commit:.\([0-9a-z]*\)."/"SrainApp/srain@#\1"/g $SRAIN_HOME/.github/changelog;
-sed -i '/^\s*$/d' $SRAIN_HOME/.github/changelog;
+sed -i s/":commit:.\([0-9a-z]*\)."/"SrainApp\/srain@#\1"/g $SRAIN_HOME/.github/changelog;
+sed -i /"^\s*$"/d $SRAIN_HOME/.github/changelog;
