@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     container: debian:buster
     steps:
+    - run: apt-get update && apt-get upgrade -y && apt-get install -y git 
     - uses: actions/checkout@v2
     - name: Release
       run: |
