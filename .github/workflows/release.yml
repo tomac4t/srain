@@ -1,22 +1,12 @@
 name: debian
-on: 
-  push:
-    tags:
-      - '*'
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: debian:buster
     steps:
     - uses: actions/checkout@v2
     - run: git fetch origin +refs/tags/*:refs/tags/*
     - name: Release
       run: |
         .github/workflows/release.sh ci
-    - uses: ncipollo/release-action@v1
-      with:
-        allowUpdates: true
-        artifacts: "out/*"
-        bodyFile: ".github/changelog"
-        draft: false
-        prerelease: false
-        token: ${{ secrets.GITHUB_TOKEN }}
