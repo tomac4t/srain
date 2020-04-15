@@ -24,39 +24,6 @@ srain ($SRAIN_TAG_NAME) unstable; urgency=medium
 
  -- $SRAIN_TAG_COMMITTER_NAME <$SRAIN_TAG_COMMITTER_EMAIL>  $SRAIN_TAG_DATE
 EOF
-echo "11" > $SRAIN_HOME/debian/compat
-cat > $SRAIN_HOME/debian/control << EOF
-Source: srain
-Section: net
-Priority: optional
-Maintainer: Shengyu Zhang <i@silverrainz.me>
-Build-Depends:
-	gettext,
-	libconfig-dev,
-	libgtk-3-dev,
-	libsecret-1-dev,
-	libsoup2.4-dev,
-	libssl-dev,
-	pkg-config,
-Standards-Version: 4.5.0
-Rules-Requires-Root: no
-Homepage: https://github.com/SrainApp/srain/
-Vcs-Browser: https://github.com/SrainApp/srain/
-Vcs-Git: https://github.com/SrainApp/srain.git
-
-Package: srain
-Architecture: any
-Depends:
-	${shlibs:Depends},
-	${misc:Depends},
-	glib-networking,
-	libconfig9 (>= 1.5),
-	libgtk-3-0 (>= 3.16),
-	libsecret-1-0,
-	libsoup2.4-1,
-Description: Modern IRC client
- Modern IRC client written in GTK.
-EOF
 cd $SRAIN_HOME;
 rm -rf srain-contrib;
 dpkg-buildpackage -b -us -uc;
