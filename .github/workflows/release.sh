@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
+# Install the dependencies.
 if [ $1 = "ci" ]; then
 sudo apt-get install pkg-config gettext libgtk-3-dev libsoup2.4-dev libconfig-dev libssl-dev libsecret-1-dev glib-networking libgtk3.0 libsoup2.4 libconfig9 libsecret-1-0;
 fi
@@ -9,6 +10,7 @@ SRAIN_TAG_NAME=`git describe --tags $SRAIN_TAG`;
 SRAIN_TAG_COMMITTER_NAME=`git log $SRAIN_TAG -n 1 --pretty=format:"%an"`;
 SRAIN_TAG_COMMITTER_EMAIL=`git log $SRAIN_TAG -n 1 --pretty=format:"%ae"`;
 SRAIN_TAG_DATE=`git log $SRAIN_TAG -n 1 --pretty=format:"%ad" --date=format:'%a, %d %b %Y %H:%M:%S %z'`;
+# Download the debian files.
 git clone https://github.com/SrainApp/srain-contrib.git --depth 1;
 cd srain-contrib;
 mv pack/debian $SRAIN_HOME/debian;
@@ -55,7 +57,14 @@ EOF
 cd $SRAIN_HOME;
 rm -rf srain-contrib;
 dpkg-buildpackage -b -us -uc;
-mkdir out;
-mv ../srain_"$SRAIN_TAG_NAME"_amd64.deb $PWD/out/
-sudo apt-get install $PWD/out/srain_"$SRAIN_TAG_NAME"_amd64.deb;
+mkdir $SRAIN_HOME/out;
+mv $SRAIN_HOME/../srain_"$SRAIN_TAG_NAME"_amd64.deb $SRAIN_HOME/out/
+sudo apt-get install $SRAIN_HOME/out/srain_"$SRAIN_TAG_NAME"_amd64.deb;
 /usr/bin/srain --version;
+# Changelog
+CHANGELOG_LINE=`grep -oP "^========================" $SRAIN_HOME/doc/changelog.rst -n | awk -F: '{print $1}'`;
+CHANGELOG_LINE_ONE=`echo $CHANGELOG_LINE | awk '{print $1}'`;
+CHANGELOG_LINE_TWO=`echo $CHANGELOG_LINE | awk '{print $2}'`;
+CHANGELOG_LASTEST_BEGIN=`expr $CHANGELOG_LINE_ONE + 2`
+CHANGELOG_LASTEST_END=`expr $CHANGELOG_LINE_TWO - 5`
+sed -n "$CHANGELOG_LASTEST_BEGIN","$CHANGELOG_LASTEST_END"p $SRAIN_HOME/doc/changelog.rst  > $SRAIN_HOME/.github/changelog 
