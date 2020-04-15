@@ -16,7 +16,7 @@ jobs:
       with:
         allowUpdates: true
         artifacts: "out/*"
-        bodyFile: "/.github/changelog"
+        bodyFile: ".github/changelog"
         draft: true
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
