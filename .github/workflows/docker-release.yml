@@ -12,12 +12,12 @@ jobs:
       run: apt-get update && apt-get upgrade -y && apt-get install -y git 
     - uses: actions/checkout@v2
     - name: build
-      run: .github/workflows/release.sh ci
+      run: .github/workflows/release.sh
     - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
         artifacts: "out/*"
         bodyFile: ".github/changelog"
-        draft: false
+        draft: true
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}

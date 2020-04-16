@@ -1,16 +1,19 @@
 #!/bin/bash
 set -ex
-# Install the dependencies.
-if [ $1 = "ci" ]; then
-apt-get install -y debhelper dpkg-dev pkg-config gettext libgtk-3-dev libsoup2.4-dev libconfig-dev libssl-dev libsecret-1-dev glib-networking libgtk3.0 libsoup2.4 libconfig9 libsecret-1-0;
-git fetch origin +refs/tags/*:refs/tags/*
-fi
+# Fetch all tags.
+git fetch origin +refs/tags/*:refs/tags/*;
+# Basic environment variables.
 SRAIN_HOME=$PWD;
 SRAIN_TAG=`git rev-list --tags --max-count=1`;
 SRAIN_TAG_NAME=`git describe --tags $SRAIN_TAG`;
 SRAIN_TAG_COMMITTER_NAME=`git log $SRAIN_TAG -n 1 --pretty=format:"%an"`;
 SRAIN_TAG_COMMITTER_EMAIL=`git log $SRAIN_TAG -n 1 --pretty=format:"%ae"`;
 SRAIN_TAG_DATE=`git log $SRAIN_TAG -n 1 --pretty=format:"%ad" --date=format:'%a, %d %b %Y %H:%M:%S %z'`;
+# Install the dependencies:
+# Debian building packages: debhelper, dpkg-dev
+# Make dependencies: gettext, libconfig-dev, libgtk-3-dev, libsecret-1-dev, libsoup2.4-dev, libssl-dev, pkg-config     
+# Runtime dependencies: glib-networking, libgtk-3-0, libsecret-1-0, libconfig9, libsoup2.4  
+apt-get install -y debhelper dpkg-dev gettext libconfig-dev libgtk-3-dev libsecret-1-dev libsoup2.4-dev libssl-dev pkg-config glib-networking libgtk-3-0 libsecret-1-0 libconfig9 libsoup2.4;
 # Download the debian files.
 git clone https://github.com/SrainApp/srain-contrib.git --depth 1;
 cd srain-contrib;
@@ -24,12 +27,14 @@ srain ($SRAIN_TAG_NAME) unstable; urgency=medium
 EOF
 cd $SRAIN_HOME;
 rm -rf srain-contrib;
+# Build the package.
 dpkg-buildpackage -b -us -uc;
 mkdir $SRAIN_HOME/out;
 mv $SRAIN_HOME/../srain_"$SRAIN_TAG_NAME"_amd64.deb $SRAIN_HOME/out/
-apt-get install $SRAIN_HOME/out/srain_"$SRAIN_TAG_NAME"_amd64.deb;
+# Basic test.
+apt-get install -f $SRAIN_HOME/out/srain_"$SRAIN_TAG_NAME"_amd64.deb;
 /usr/bin/srain --version;
-# Changelog
+# Release changelog.
 CHANGELOG_LINE=`grep -oP "^========================" $SRAIN_HOME/doc/changelog.rst -n | awk -F: '{print $1}'`;
 CHANGELOG_LINE_ONE=`echo $CHANGELOG_LINE | awk '{print $1}'`;
 CHANGELOG_LINE_TWO=`echo $CHANGELOG_LINE | awk '{print $2}'`;
