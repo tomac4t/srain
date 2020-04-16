@@ -7,8 +7,8 @@ from requests.exceptions import Timeout
 #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #        GITHUB_REPOSITORY: ${{ GITHUB_REPOSITORY }}
 # https://github.community/t5/GitHub-Actions/Unable-to-access-GITHUB-TOKEN/td-p/41184
-GITHUB_TOKEN = os.environ["GITHUB_TOKEN"];
-GITHUB_REPOSITORY = os.environ["GITHUB_REPOSITORY"];
+GITHUB_TOKEN = os.environ["GH_TOKEN"];
+GITHUB_REPOSITORY = os.environ["GH_REPOSITORY"];
 
 # https://developer.github.com/v3/repos/releases
 RELEASES_API = "https://api.github.com/repos/" + GITHUB_REPOSITORY + "/releases";
