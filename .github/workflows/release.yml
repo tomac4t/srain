@@ -12,6 +12,6 @@ jobs:
       run: .github/workflows/release.sh
     - name: upload the assets
       run: .github/workflows/assets.py
-      with: |
+      env: |
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPOSITORY: ${{ GITHUB_REPOSITORY }}
