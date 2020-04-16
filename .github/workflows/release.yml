@@ -3,6 +3,9 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    env: |
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_REPOSITORY: ${{ GITHUB_REPOSITORY }}
     container: debian:buster
     steps:
     - name: Upgrade the packages
@@ -11,7 +14,4 @@ jobs:
     - name: build
       run: .github/workflows/release.sh
     - name: upload the assets
-      env: |
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPOSITORY: ${{ GITHUB_REPOSITORY }}
       run: .github/workflows/assets.py
