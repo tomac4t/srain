@@ -1,7 +1,7 @@
 name: docker-release
 on: push
 jobs:
-  debiab-buster:
+  debiab-buster-amd64:
     runs-on: ubuntu-latest
     container: debian:buster
     env: 
@@ -14,9 +14,9 @@ jobs:
       run: .github/workflows/release.sh
     - name: upload the assets
       run: .github/workflows/assets.py
-  debiab-bullseye:
+  debiab-buster-i386:
     runs-on: ubuntu-latest
-    container: debian:bullseye
+    container: i386/debian:bullseye
     env: 
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
