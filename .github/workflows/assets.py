@@ -3,10 +3,9 @@ import sys, os, json, requests
 from requests.exceptions import Timeout
 
 # It should set env variable on the github actions files:
-#      env: |
+#      env:
 #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        GITHUB_REPOSITORY: ${{ GITHUB_REPOSITORY }}
-# https://github.community/t5/GitHub-Actions/Unable-to-access-GITHUB-TOKEN/td-p/41184
+#        GITHUB_REPOSITORY: $GITHUB_REPOSITORY
 GITHUB_TOKEN = os.environ["GH_TOKEN"];
 GITHUB_REPOSITORY = os.environ["GH_REPO"];
 
@@ -16,10 +15,13 @@ RELEASES_API = "https://api.github.com/repos/" + GITHUB_REPOSITORY + "/releases"
 # `text/plain` is the default value for textual files. 
 # `application/octet-stream` is the default value for all 
 # other cases. An unknown file type should use this type.
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 MINETYPE = "application/octet-stream"
 
 def get_uploadurl():
   global UPLOAD_URL;
+
+  print("Releases API: "+ RELEASES_API)
 
   headers = {
     'Authorization': 'token ' + GITHUB_TOKEN,
@@ -29,12 +31,14 @@ def get_uploadurl():
     response = requests.get(RELEASES_API, headers=headers);
   
   except Timeout:
-    print("\033[1;31;40mThe request failed: " + RELEASES_API + "\033[0m");
+    print("\033[1;31;40mThe request timed out: " + RELEASES_API + "\033[0m");
     sys.exit(1);
+
+  print("debug:\n" + response);
 
   UPLOAD_URL = response.json()[0]["upload_url"].replace(u'{?name,label}','');
 
-  print("Releases API: "+ RELEASES_API + "\nUpload URL: "+ UPLOAD_URL);
+  print("Upload URL: "+ UPLOAD_URL);
 
 
 def upload_assets():
@@ -63,7 +67,7 @@ def upload_assets():
       response = requests.post(UPLOAD_URL, headers=headers, params=params, data=data);
 
     except Timeout:
-      print('\033[1;31;40mThe request failed: ' + UPLOAD_URL + "\033[0m");
+      print('\033[1;31;40mThe request timed out: ' + UPLOAD_URL + "\033[0m");
       sys.exit(1);
 
     print("debug: " + str(response.status_code));
