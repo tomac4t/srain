@@ -1,0 +1,17 @@
+name: docker-release
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: debian:buster
+    steps:
+    - name: Upgrade the packages
+      run: apt-get update && apt-get upgrade -y && apt-get install -y git 
+    - uses: actions/checkout@v2
+    - name: build
+      run: .github/workflows/release.sh
+    - name: upload the assets
+      env: |
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ GITHUB_REPOSITORY }}
+      run: .github/workflows/assets.py
