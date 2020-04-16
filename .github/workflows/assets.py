@@ -4,8 +4,8 @@ from requests.exceptions import Timeout
 
 # It should set env variable on the github actions files:
 #      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+#        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        GH_REPOSITORY: $GITHUB_REPOSITORY
 GITHUB_TOKEN = os.environ["GH_TOKEN"];
 GITHUB_REPOSITORY = os.environ["GH_REPO"];
 
