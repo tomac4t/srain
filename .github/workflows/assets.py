@@ -34,7 +34,7 @@ def get_uploadurl():
     print("\033[1;31;40mThe request timed out: " + RELEASES_API + "\033[0m");
     sys.exit(1);
 
-  print("debug:\n" + response);
+  print("debug:\n" + str(response));
 
   UPLOAD_URL = response.json()[0]["upload_url"].replace(u'{?name,label}','');
 

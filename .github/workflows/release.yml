@@ -1,4 +1,4 @@
-name: docker-release
+name: docker-release-assets
 on: push
 jobs:
   debiab-buster-amd64:
