@@ -12,6 +12,6 @@ jobs:
       run: apt-get update && apt-get upgrade -y && apt-get install -y git 
     - uses: actions/checkout@v2
     - name: build
-      run: .github/workflows/debian-release.sh
+      run: .github/workflows/release-debian-package.sh
     - name: upload the assets
-      run: .github/workflows/upload-release-assets.py
+      run: .github/workflows/release-assets-upload.py

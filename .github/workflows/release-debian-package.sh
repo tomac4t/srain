@@ -11,8 +11,9 @@ SRAIN_TAG_COMMITTER_EMAIL=`git log $SRAIN_TAG -n 1 --pretty=format:"%ae"`;
 SRAIN_TAG_DATE=`git log $SRAIN_TAG -n 1 --pretty=format:"%ad" --date=format:'%a, %d %b %Y %H:%M:%S %z'`;
 # Install the dependencies:
 # Debian building packages: debhelper, dpkg-dev
-# Make dependencies: gettext, libconfig-dev, libgtk-3-dev, libsecret-1-dev, libsoup2.4-dev, libssl-dev, pkg-config     
-# Runtime dependencies: glib-networking, libgtk-3-0, libsecret-1-0, libconfig9, libsoup2.4  
+# Make dependencies: gettext, libconfig-dev, libgtk-3-dev, libsecret-1-dev, libsoup2.4-dev, libssl-dev, pkg-config    
+# Runtime dependencies: glib-networking, libgtk-3-0, libsecret-1-0, libconfig9, libsoup2.4
+# Python3 script: python3 python3-requests
 apt-get install -y debhelper dpkg-dev gettext libconfig-dev libgtk-3-dev libsecret-1-dev libsoup2.4-dev libssl-dev pkg-config glib-networking libgtk-3-0 libsecret-1-0 libconfig9 libsoup2.4 python3 python3-requests;
 # Download the debian files.
 git clone https://github.com/SrainApp/srain-contrib.git --depth 1;
@@ -32,14 +33,3 @@ mv $SRAIN_HOME/../srain_"$SRAIN_TAG_NAME"_amd64.deb $SRAIN_HOME/out/
 # Basic test.
 apt-get install -f $SRAIN_HOME/out/srain_"$SRAIN_TAG_NAME"_amd64.deb;
 /usr/bin/srain --version;
-# Release changelog.
-CHANGELOG_LINE=`grep -oP "^========================" $SRAIN_HOME/doc/changelog.rst -n | awk -F: '{print $1}'`;
-CHANGELOG_LINE_ONE=`echo $CHANGELOG_LINE | awk '{print $1}'`;
-CHANGELOG_LINE_TWO=`echo $CHANGELOG_LINE | awk '{print $2}'`;
-CHANGELOG_LASTEST_BEGIN=`expr $CHANGELOG_LINE_ONE + 2`
-CHANGELOG_LASTEST_END=`expr $CHANGELOG_LINE_TWO - 5`
-sed -n "$CHANGELOG_LASTEST_BEGIN","$CHANGELOG_LASTEST_END"p $SRAIN_HOME/doc/changelog.rst  > $SRAIN_HOME/.github/changelog 
-sed -i s/":pull:.\([0-9]*\)."/"#\1"/g $SRAIN_HOME/.github/changelog;
-sed -i s/":issue:.\([0-9]*\)."/"#\1"/g $SRAIN_HOME/.github/changelog;
-sed -i s/":commit:.\([0-9a-z]*\)."/"SrainApp\/srain@\1"/g $SRAIN_HOME/.github/changelog;
-sed -i /"^\s*$"/d $SRAIN_HOME/.github/changelog;
