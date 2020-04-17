@@ -1,5 +1,8 @@
 name: docker-release-assets
-on: push
+on:
+  release:
+    types:
+      - created
 jobs:
   debiab-buster:
     runs-on: ubuntu-latest
