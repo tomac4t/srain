@@ -1,7 +1,7 @@
 name: docker-release-assets
 on: push
 jobs:
-  debiab-buster-amd64:
+  debiab-buster:
     runs-on: ubuntu-latest
     container: debian:buster
     env: 
@@ -12,6 +12,6 @@ jobs:
       run: apt-get update && apt-get upgrade -y && apt-get install -y git 
     - uses: actions/checkout@v2
     - name: build
-      run: .github/workflows/release.sh
+      run: .github/workflows/debian-release.sh
     - name: upload the assets
-      run: .github/workflows/assets.py
+      run: .github/workflows/upload-release-assets.py

@@ -5,7 +5,7 @@ from requests.exceptions import Timeout
 # It should set env variable on the github actions files:
 #      env:
 #        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        GH_REPOSITORY: $GITHUB_REPOSITORY
+#        GH_REPOSITORY: ${{ github.repository }}
 GITHUB_TOKEN = os.environ["GH_TOKEN"];
 GITHUB_REPOSITORY = os.environ["GH_REPO"];
 
@@ -21,11 +21,11 @@ MINETYPE = "application/octet-stream"
 def get_uploadurl():
   global UPLOAD_URL;
 
-  print("Releases API: "+ RELEASES_API)
+  print("Releases API: "+ RELEASES_API);
 
   headers = {
     'Authorization': 'token ' + GITHUB_TOKEN,
-  }
+  };
 
   try:
     response = requests.get(RELEASES_API, headers=headers);
@@ -34,7 +34,7 @@ def get_uploadurl():
     print("\033[1;31;40mThe request timed out: " + RELEASES_API + "\033[0m");
     sys.exit(1);
 
-  print("debug:\n" + str(response));
+  print("debug: " + str(response.status_code) + "\ndebug:\n" + str(response.text));
 
   UPLOAD_URL = response.json()[0]["upload_url"].replace(u'{?name,label}','');
 
@@ -55,11 +55,11 @@ def upload_assets():
     headers = {
       'Authorization': 'token ' + GITHUB_TOKEN,
       'Content-Type': MINETYPE,
-    }
+    };
 
     params = (
       ('name', FILENAME),
-    )
+    );
   
     data = open("out/" + FILENAME, 'rb').read();
 
@@ -70,8 +70,7 @@ def upload_assets():
       print('\033[1;31;40mThe request timed out: ' + UPLOAD_URL + "\033[0m");
       sys.exit(1);
 
-    print("debug: " + str(response.status_code));
-    print("debug:\n" + str(response.text));
+    print("debug: " + str(response.status_code) + "\ndebug:\n" + str(response.text));
 
     # Response for successful upload: 201 Created
     # https://developer.github.com/v3/repos/releases/#response-for-successful-upload
