@@ -3,7 +3,7 @@ on:
   release:
     types: [created]
 jobs:
-  debiab-buster:
+  debian-buster:
     runs-on: ubuntu-latest
     container: debian:buster
     env:
