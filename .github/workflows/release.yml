@@ -12,7 +12,12 @@ jobs:
       GH_REF: ${{ github.ref }}
     steps:
     - name: upgrade the packages
-      run: apt-get update && apt-get upgrade -y && apt-get install -y git
+      run: |
+        sed -i "s/deb.debian.org/debian-archive.trafficmanager.net/g" /etc/apt/sources.list;
+        echo "deb http://debian-archive.trafficmanager.net/debian/  buster-backports main" > /etc/apt/sources.list;
+        apt-get update;
+        apt-get upgrade -y;
+        apt-get install -y git;
     - uses: actions/checkout@v2
     - name: build
       run: .github/workflows/release-debian-package.sh
